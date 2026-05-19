@@ -156,7 +156,7 @@ npm run preview
 
 ## 作者
 
-- 向阳乔木
-- GitHub：<https://github.com/joeseesun>
-- X / Twitter：<https://x.com/vista8>
-- Blog：<https://blog.qiaomu.ai/>
+- 
+- GitHub：<https://github.com/tobebuilder>
+- X / Twitter：<https://x.com/tobe_builder>
+- Blog：<https://blog.tobebuilder.com/>
