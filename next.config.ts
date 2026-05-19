@@ -21,13 +21,13 @@ const nextConfig: NextConfig = {
   experimental: {
     workerThreads: false,
     cpus: 1,
-    outputFileTracingExcludes: {
-      "*": [
-        "node_modules/@vercel/og/**",
-        "node_modules/next/dist/compiled/@vercel/og/**"
-      ]
-    }
   },
+  outputFileTracingExcludes: {
+    "*": [
+      "node_modules/@vercel/og/**",
+      "node_modules/next/dist/compiled/@vercel/og/**"
+    ]
+  }
 };
 
 export default nextConfig;
