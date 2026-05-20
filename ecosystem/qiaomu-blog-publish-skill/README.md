@@ -1,6 +1,6 @@
-# qiaomu-blog-publish Skill
+# blog-publish Skill
 
-这个目录放的是配套的 Claude Skill，用来把 Markdown、纯文本或网页内容直接发布到你自己的 Qiaomu Blog。
+这个目录放的是配套的 Claude Skill，用来把 Markdown、纯文本或网页内容直接发布到你自己的 Blog。
 
 ## 能做什么
 

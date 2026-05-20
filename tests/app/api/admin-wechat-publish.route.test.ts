@@ -126,6 +126,6 @@ describe('/api/admin/wechat-publish route', () => {
     expect(forwarded.author).toBe('阿条')
     expect(forwarded.need_open_comment).toBe(true)
     expect(forwarded.only_fans_can_comment).toBe(false)
-    expect(forwarded.cover_image_url).toMatch(/^https:\/\/blog\.qiaomu\.ai\/default-covers\/qm-cover-[1-3]\.jpg$/)
+    expect(forwarded.cover_image_url).toMatch(/^https:\/\/blog\.explorify\.shop\/default-covers\/qm-cover-[1-3]\.jpg$/)
   })
 })
