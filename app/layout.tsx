@@ -146,10 +146,6 @@ export default async function RootLayout({
   }
   applyFont(k);
   applyTheme(defaultTheme);
-  try {
-    var savedTheme = window.localStorage.getItem(themeStorageKey);
-    if (isTheme(savedTheme)) applyTheme(savedTheme);
-  } catch (e) {}
 })();
 `
 

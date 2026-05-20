@@ -79,9 +79,6 @@ export function normalizeTheme(value: string | null | undefined, fallback: Theme
 export function getClientThemePreference(fallback: Theme): Theme {
   if (typeof window === 'undefined') return fallback
 
-  const saved = window.localStorage.getItem(THEME_STORAGE_KEY)
-  if (isTheme(saved)) return saved
-
   const attr = document.documentElement.getAttribute('data-theme')
   if (isTheme(attr)) return attr
 
