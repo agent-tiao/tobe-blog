@@ -49,7 +49,7 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       robots: searchIndexable ? undefined : { index: false, follow: false },
-      authors: [{ name: 'tobebuilder' }],
+      authors: [{ name: '阿条' }],
       alternates: {
         canonical: `${baseUrl}/${post.slug}`,
       },
@@ -59,7 +59,7 @@ export async function generateMetadata({
         type: 'article',
         publishedTime: new Date(post.published_at * 1000).toISOString(),
         modifiedTime: new Date(post.updated_at * 1000).toISOString(),
-        authors: ['tobebuilder'],
+        authors: ['阿条'],
         images: [{ url: ogImage }],
       },
       twitter: {
@@ -203,8 +203,8 @@ export default async function PostPage({
             headline: post.title,
             description: post.description || '',
             image: ogImage,
-            author: { '@type': 'Person', name: 'tobebuilder', url: 'https://x.com/tobe_builder' },
-            publisher: { '@type': 'Organization', name: 'tobebuilder', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/icon-512.png` } },
+            author: { '@type': 'Person', name: '阿条', url: 'https://x.com/tobe_builder' },
+            publisher: { '@type': 'Organization', name: '阿条', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/icon-512.png` } },
             datePublished: new Date(post.published_at * 1000).toISOString(),
             dateModified: new Date(post.updated_at * 1000).toISOString(),
             mainEntityOfPage: { '@type': 'WebPage', '@id': `${baseUrl}/${post.slug}` },

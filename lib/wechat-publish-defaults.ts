@@ -1,3 +1,3 @@
-export const WECHAT_DEFAULT_AUTHOR = 'tobebuilder'
+export const WECHAT_DEFAULT_AUTHOR = '阿条'
 export const WECHAT_DEFAULT_NEED_OPEN_COMMENT = true
 export const WECHAT_DEFAULT_ONLY_FANS_CAN_COMMENT = false
