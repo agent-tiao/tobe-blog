@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SearchEntry } from '@/components/SearchEntry'
 import { Pagination } from '@/components/Pagination'
-import { ThemeDropdown } from '@/components/ThemeDropdown'
 import type { HomeProps } from '@/components/HomeClient'
 import type { SiteNavLink } from '@/lib/site'
 
@@ -27,10 +26,8 @@ function formatDateCompact(ts: number) {
 }
 
 function TerminalHeader({
-  initialTheme,
   navLinks,
 }: {
-  initialTheme: HomeProps['initialTheme']
   navLinks: SiteNavLink[]
 }) {
   const defaultLinks = [
@@ -55,7 +52,7 @@ function TerminalHeader({
       {/* Left: terminal prompt */}
       <div className="terminal-home-prompt" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <span style={{ width: 10, height: 10, borderRadius: '50%', background: ACCENT, display: 'inline-block', boxShadow: `0 0 10px ${ACCENT}` }} />
-        <Link href="/" style={{ color: MUTED, textDecoration: 'none' }}>qiaomu@blog:~$</Link>
+        <Link href="/" style={{ color: MUTED, textDecoration: 'none' }}>atiao@blog:~$</Link>
         <span style={{ color: FG }}>./serve --port=443</span>
       </div>
 
@@ -81,19 +78,7 @@ function TerminalHeader({
           )
         ))}
 
-        {/* Theme dropdown — terminal style, self-contained */}
-        <ThemeDropdown
-          initialTheme={initialTheme}
-          buttonStyle={{ color: MUTED, fontFamily: '"JetBrains Mono", ui-monospace, monospace', fontSize: 12 }}
-          dropdownStyle={{
-            background: BG,
-            border: `1px solid ${BORDER}`,
-            fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-            boxShadow: `0 8px 24px rgba(0,0,0,0.4)`,
-          }}
-          itemStyle={{ color: FG, fontSize: 12 }}
-          activeItemStyle={{ background: ACCENT, color: '#0f1117' }}
-        />
+
 
         {/* Search */}
         <div style={{ color: MUTED }}>
@@ -105,7 +90,6 @@ function TerminalHeader({
 }
 
 export function HomeVariantC({
-  initialTheme,
   posts,
   navLinks,
   currentPage,
@@ -161,7 +145,7 @@ export function HomeVariantC({
       }} />
 
       <div className="terminal-home-shell" style={{ maxWidth: 860, margin: '0 auto', padding: '32px 40px 0', position: 'relative', zIndex: 1 }}>
-        <TerminalHeader initialTheme={initialTheme} navLinks={navLinks} />
+        <TerminalHeader navLinks={navLinks} />
 
         {/* ASCII-style banner */}
         <div style={{ marginTop: 36, marginBottom: 28 }}>

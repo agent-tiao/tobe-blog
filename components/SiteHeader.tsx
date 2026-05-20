@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useState, useRef, useEffect, useSyncExternalStore } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { SearchEntry } from './SearchEntry'
-import { ThemeDropdown } from '@/components/ThemeDropdown'
 import { getClientThemePreference, subscribeToThemeChange, type Theme } from '@/lib/appearance'
 import type { SiteCategoryLink, SiteNavLink } from '@/lib/site'
 
@@ -190,7 +189,6 @@ export function SiteHeader({
             )}
 
             {links.map(link => renderLink(link))}
-            <ThemeDropdown initialTheme={initialTheme} />
             <SearchEntry />
           </nav>
 
@@ -255,27 +253,7 @@ export function SiteHeader({
                 {renderLink(link, () => setMobileMenuOpen(false))}
               </div>
             ))}
-            <div className="px-4 py-3 border-t border-[var(--editor-line)] text-[var(--editor-muted)]">
-              <ThemeDropdown
-                initialTheme={initialTheme}
-                inlineMenu
-                fullWidth
-                onThemeChange={() => setMobileMenuOpen(false)}
-                buttonStyle={{
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  color: 'var(--editor-muted)',
-                  fontSize: 14,
-                }}
-                dropdownStyle={{
-                  background: 'var(--editor-panel)',
-                }}
-                itemStyle={{
-                  padding: '10px 12px',
-                  fontSize: 13,
-                }}
-              />
-            </div>
+
           </nav>
         </div>
       </div>

@@ -161,7 +161,10 @@ body {
 
 :is(.novel-prose, .rich-content) h1,
 :is(.novel-prose, .rich-content) h2,
-:is(.novel-prose, .rich-content) h3 {
+:is(.novel-prose, .rich-content) h3,
+:is(.novel-prose, .rich-content) h4,
+:is(.novel-prose, .rich-content) h5,
+:is(.novel-prose, .rich-content) h6 {
   font-weight: 700;
   letter-spacing: 0;
   line-height: 1.25;
@@ -178,6 +181,18 @@ body {
 
 :is(.novel-prose, .rich-content) h3 {
   font-size: clamp(1.2rem, 2vw, 1.45rem);
+}
+
+:is(.novel-prose, .rich-content) h4 {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+}
+
+:is(.novel-prose, .rich-content) h5 {
+  font-size: 1rem;
+}
+
+:is(.novel-prose, .rich-content) h6 {
+  font-size: 0.9rem;
 }
 
 :is(.novel-prose, .rich-content) p,
@@ -503,7 +518,10 @@ body {
 /* 楷体模式下标题用系统黑体，不用楷体 */
 [data-font="kaiti"] :is(.rich-content) h1,
 [data-font="kaiti"] :is(.rich-content) h2,
-[data-font="kaiti"] :is(.rich-content) h3 {
+[data-font="kaiti"] :is(.rich-content) h3,
+[data-font="kaiti"] :is(.rich-content) h4,
+[data-font="kaiti"] :is(.rich-content) h5,
+[data-font="kaiti"] :is(.rich-content) h6 {
   font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -737,7 +755,10 @@ body {
 /* ── 终端主题：文章内容深色适配 ── */
 [data-theme="terminal"] :is(.novel-prose, .rich-content) h1,
 [data-theme="terminal"] :is(.novel-prose, .rich-content) h2,
-[data-theme="terminal"] :is(.novel-prose, .rich-content) h3 {
+[data-theme="terminal"] :is(.novel-prose, .rich-content) h3,
+[data-theme="terminal"] :is(.novel-prose, .rich-content) h4,
+[data-theme="terminal"] :is(.novel-prose, .rich-content) h5,
+[data-theme="terminal"] :is(.novel-prose, .rich-content) h6 {
   color: var(--article-heading);
 }
 
@@ -774,7 +795,10 @@ body {
 /* ── 杂志编辑主题：文章内容适配 ── */
 [data-theme="editorial"] :is(.novel-prose, .rich-content) h1,
 [data-theme="editorial"] :is(.novel-prose, .rich-content) h2,
-[data-theme="editorial"] :is(.novel-prose, .rich-content) h3 {
+[data-theme="editorial"] :is(.novel-prose, .rich-content) h3,
+[data-theme="editorial"] :is(.novel-prose, .rich-content) h4,
+[data-theme="editorial"] :is(.novel-prose, .rich-content) h5,
+[data-theme="editorial"] :is(.novel-prose, .rich-content) h6 {
   color: var(--article-heading);
   font-family: "Noto Serif SC", Georgia, serif;
 }
