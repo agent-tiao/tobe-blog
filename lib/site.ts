@@ -5,6 +5,7 @@ export interface SiteNavLink {
   label: string
   url: string
   openInNewTab: boolean
+  hidden?: boolean
 }
 
 export interface SiteCategoryLink {
@@ -32,7 +33,7 @@ export async function getSiteHeaderData(db: D1Database): Promise<{
       try {
         const parsed = JSON.parse(navJson)
         if (Array.isArray(parsed)) {
-          navLinks = parsed
+          navLinks = parsed.filter((link) => !link.hidden)
         }
       } catch {}
     }

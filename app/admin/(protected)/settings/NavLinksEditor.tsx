@@ -6,6 +6,7 @@ interface NavLink {
   label: string
   url: string
   openInNewTab: boolean
+  hidden?: boolean
 }
 
 interface Props {
@@ -49,7 +50,7 @@ export function NavLinksEditor({ initialValue, onSave, saving }: Props) {
   return (
     <div className="space-y-3">
       {links.map((link, idx) => (
-        <div key={idx} className="flex items-center gap-2 flex-wrap">
+        <div key={idx} className={`flex items-center gap-2 flex-wrap ${link.hidden ? 'opacity-50 grayscale' : ''}`}>
           <input
             className={`${inputCls} w-24`}
             placeholder="名称"
@@ -70,6 +71,15 @@ export function NavLinksEditor({ initialValue, onSave, saving }: Props) {
               className="accent-[var(--editor-accent)]"
             />
             新窗口
+          </label>
+          <label className="flex items-center gap-1.5 text-xs text-[var(--editor-muted)] cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={!!link.hidden}
+              onChange={(e) => update(idx, 'hidden', e.target.checked)}
+              className="accent-[var(--editor-accent)]"
+            />
+            下架隐藏
           </label>
           <button onClick={() => moveUp(idx)} disabled={idx === 0} className={`${btnCls} bg-[var(--editor-soft)] text-[var(--editor-muted)] hover:text-[var(--editor-ink)] disabled:opacity-30`}>↑</button>
           <button onClick={() => moveDown(idx)} disabled={idx === links.length - 1} className={`${btnCls} bg-[var(--editor-soft)] text-[var(--editor-muted)] hover:text-[var(--editor-ink)] disabled:opacity-30`}>↓</button>
