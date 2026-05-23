@@ -2,6 +2,34 @@
 @import "katex/dist/katex.min.css";
 
 :root {
+  --background: #ffffff;
+  --foreground: #111827;
+  --editor-app-bg: #ffffff;
+  --editor-panel: #f8f9fa;
+  --editor-soft: #f1f3f5;
+  --editor-line: #e9ecef;
+  --editor-ink: #111827;
+  --editor-muted: #6b7280;
+  --editor-accent: #c96442;
+  --editor-accent-ink: #ffffff;
+  --editor-link: #c96442;
+  --editor-code-bg: #f8f9fa;
+  --editor-code-border: #e9ecef;
+  --editor-quote-bg: #f8f9fa;
+  --editor-selection: #cfe6ff;
+  --stone-gray: #9ca3af;
+  --border-warm: #e9ecef;
+  --coral: #d97757;
+  --article-heading: #111827;
+  --article-body: #374151;
+  --article-quote: #6b7280;
+  --article-quote-border: #c96442;
+  --article-quote-nested-border: #e08a67;
+  --article-quote-nested-bg: rgba(201, 100, 66, 0.05);
+}
+
+/* ── 主题：暖米色 (warm) ── */
+[data-theme="warm"] {
   --background: #f5f4ed;
   --foreground: #141413;
   --editor-app-bg: #f5f4ed;
@@ -1060,30 +1088,3 @@ body {
   }
 }
 
-/* ── 主题：简洁白底 (clean) ── */
-[data-theme="clean"] {
-  --background: #ffffff;
-  --foreground: #111827;
-  --editor-app-bg: #ffffff;
-  --editor-panel: #f8f9fa;
-  --editor-soft: #f1f3f5;
-  --editor-line: #e9ecef;
-  --editor-ink: #111827;
-  --editor-muted: #6b7280;
-  --editor-accent: #c96442;
-  --editor-accent-ink: #ffffff;
-  --editor-link: #c96442;
-  --editor-code-bg: #f8f9fa;
-  --editor-code-border: #e9ecef;
-  --editor-quote-bg: #f8f9fa;
-  --editor-selection: #cfe6ff;
-  --stone-gray: #9ca3af;
-  --border-warm: #e9ecef;
-  --coral: #d97757;
-  --article-heading: #111827;
-  --article-body: #374151;
-  --article-quote: #6b7280;
-  --article-quote-border: #c96442;
-  --article-quote-nested-border: #e08a67;
-  --article-quote-nested-bg: rgba(201, 100, 66, 0.05);
-}

@@ -4,13 +4,13 @@ export const THEME_CHANGE_EVENT = 'qm-theme-change'
 export const THEME_OPTIONS = [
   {
     id: 'default',
-    label: '默认（暖米色）',
-    description: '温暖克制的米黄色阅读体验',
+    label: '默认（纯白）',
+    description: '极简清爽的纯白阅读体验',
   },
   {
-    id: 'clean',
-    label: '简洁白底',
-    description: '纯白背景，清爽现代的阅读体验',
+    id: 'warm',
+    label: '暖米色',
+    description: '温暖克制的米黄色阅读体验',
   },
   {
     id: 'refined',
