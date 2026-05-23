@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SiteFooter } from '@/components/SiteFooter'
@@ -73,6 +74,8 @@ export function AboutContent({
   categories,
   initialTheme,
 }: AboutContentProps) {
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+
   return (
     <div
       className="min-h-screen flex flex-col"
@@ -142,6 +145,38 @@ export function AboutContent({
                 const Icon = socialIcons[link.type] ?? socialIcons.link
                 const label = link.label || socialLabels[link.type] || link.type
                 const isExternal = link.url.startsWith('http')
+                const isPlainText = !link.url.startsWith('http') && !link.url.startsWith('/') && !link.url.startsWith('mailto:')
+
+                if (isPlainText) {
+                  return (
+                    <div key={i} className="relative flex items-center group">
+                      <button
+                        title={label}
+                        aria-label={label}
+                        onClick={() => {
+                          navigator.clipboard.writeText(link.url)
+                          setCopiedId(link.url)
+                          setTimeout(() => setCopiedId(null), 2000)
+                        }}
+                        style={{
+                          color: '#9ca3af',
+                          transition: 'color 0.15s',
+                          display: 'flex',
+                          alignItems: 'center',
+                        }}
+                        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#c96442')}
+                        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#9ca3af')}
+                      >
+                        <Icon className="w-5 h-5" />
+                      </button>
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#111827] text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10 shadow-sm flex flex-col items-center">
+                        <span>{copiedId === link.url ? '已复制!' : (link.type === 'wechat' ? `微信号: ${link.url}` : link.url)}</span>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-[#111827]"></div>
+                      </div>
+                    </div>
+                  )
+                }
+
                 return (
                   <a
                     key={i}
