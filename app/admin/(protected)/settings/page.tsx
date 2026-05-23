@@ -12,6 +12,9 @@ export default async function SettingsPage() {
   let defaultTheme = ''
   let categories: Awaited<ReturnType<typeof getCategories>> = []
   let runtimeCapabilities = detectRuntimeCapabilities()
+  let aboutName = ''
+  let aboutBio = ''
+  let aboutSocial = ''
 
   try {
     const env = await getAppCloudflareEnv()
@@ -22,6 +25,9 @@ export default async function SettingsPage() {
       bodyFont = (await getSetting(env.DB, 'body_font')) || ''
       defaultTheme = (await getSetting(env.DB, 'default_theme')) || ''
       categories = await getCategories(env.DB)
+      aboutName = (await getSetting(env.DB, 'about_name')) || ''
+      aboutBio = (await getSetting(env.DB, 'about_bio')) || ''
+      aboutSocial = (await getSetting(env.DB, 'about_social')) || ''
     }
   } catch {}
 
@@ -40,6 +46,9 @@ export default async function SettingsPage() {
         initialBodyFont={bodyFont}
         initialDefaultTheme={defaultTheme}
         initialRuntimeCapabilities={runtimeCapabilities}
+        initialAboutName={aboutName}
+        initialAboutBio={aboutBio}
+        initialAboutSocial={aboutSocial}
       />
     </div>
   )

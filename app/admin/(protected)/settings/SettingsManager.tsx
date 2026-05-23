@@ -15,6 +15,7 @@ import { AiImageActionsManager } from './AiImageActionsManager'
 import { AiPostGeneratorsManager } from './AiPostGeneratorsManager'
 import { RuntimeCapabilitiesPanel } from './RuntimeCapabilitiesPanel'
 import { ThirdPartyPublishingManager } from './ThirdPartyPublishingManager'
+import { AboutEditor } from './AboutEditor'
 
 interface Category {
   name: string
@@ -29,6 +30,9 @@ interface Props {
   initialBodyFont: string
   initialDefaultTheme: string
   initialRuntimeCapabilities: RuntimeCapabilities
+  initialAboutName: string
+  initialAboutBio: string
+  initialAboutSocial: string
 }
 
 export function SettingsManager({
@@ -38,6 +42,9 @@ export function SettingsManager({
   initialBodyFont,
   initialDefaultTheme,
   initialRuntimeCapabilities,
+  initialAboutName,
+  initialAboutBio,
+  initialAboutSocial,
 }: Props) {
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
@@ -96,6 +103,26 @@ export function SettingsManager({
           <NavLinksEditor
             initialValue={initialNavLinks}
             onSave={(val) => save('nav_links', val)}
+            saving={saving}
+          />
+        </div>
+      ),
+    },
+    {
+      id: 'about',
+      label: '关于页面',
+      content: (
+        <div className="space-y-4">
+          {msg && (
+            <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-800">
+              {msg}
+            </div>
+          )}
+          <AboutEditor
+            initialName={initialAboutName}
+            initialBio={initialAboutBio}
+            initialSocial={initialAboutSocial}
+            onSave={persistSetting}
             saving={saving}
           />
         </div>

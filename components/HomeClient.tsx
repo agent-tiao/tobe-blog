@@ -72,7 +72,7 @@ export function HomeClient(props: HomeProps) {
         ? HomeVariantB
         : theme === 'terminal'
           ? HomeVariantC
-          : HomeDefault
+          : HomeDefault // default + clean 均使用默认布局
 
   return <ThemeComponent {...props} />
 }
