@@ -102,8 +102,8 @@ export function AboutContent({
           <div
             className="relative mb-6"
             style={{
-              width: 100,
-              height: 100,
+              width: 120,
+              height: 120,
               borderRadius: '50%',
               overflow: 'hidden',
               boxShadow: '0 2px 16px rgba(0,0,0,0.10), 0 0 0 3px #fff, 0 0 0 5px #e9ecef',
@@ -113,8 +113,8 @@ export function AboutContent({
             <Image
               src="/icon-512.png"
               alt={name}
-              width={100}
-              height={100}
+              width={120}
+              height={120}
               style={{ objectFit: 'cover', width: '100%', height: '100%' }}
               priority
             />
@@ -122,7 +122,7 @@ export function AboutContent({
 
           {/* 名称 */}
           <h1
-            className="text-2xl font-bold mb-2"
+            className="text-3xl font-bold mb-3"
             style={{ color: '#111827', fontFamily: 'Georgia, "Noto Serif SC", serif' }}
           >
             {name}
@@ -131,7 +131,7 @@ export function AboutContent({
           {/* 简介 */}
           {bio && (
             <p
-              className="text-base leading-relaxed mb-6"
+              className="text-lg leading-relaxed mb-8"
               style={{ color: '#6b7280' }}
             >
               {bio}
@@ -167,7 +167,7 @@ export function AboutContent({
                         onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#c96442')}
                         onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#9ca3af')}
                       >
-                        <Icon className="w-5 h-5" />
+                        <Icon className="w-6 h-6" />
                       </button>
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-[#111827] text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10 shadow-sm flex flex-col items-center">
                         <span>{copiedId === link.url ? '已复制!' : (link.type === 'wechat' ? `微信号: ${link.url}` : link.url)}</span>
@@ -194,7 +194,7 @@ export function AboutContent({
                     onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = '#c96442')}
                     onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = '#9ca3af')}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-6 h-6" />
                   </a>
                 )
               })}
