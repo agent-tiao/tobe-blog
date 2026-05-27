@@ -3,7 +3,7 @@ import { isAdminAuthenticated, COOKIE_NAME } from '@/lib/admin-auth'
 import { invalidatePublicContentCache } from '@/lib/cache'
 import { buildAutoDescription, normalizePostSlug } from '@/lib/post-utils'
 import { enqueueBackgroundJob } from '@/lib/background-jobs'
-import { getRouteContextWithDb, jsonError, jsonOk, parseJsonBody } from '@/lib/server/route-helpers'
+import { getRouteContextWithDb, jsonError, jsonOk, parseJsonBody, ensureAuthenticatedRequest } from '@/lib/server/route-helpers'
 import type { NextRequest } from 'next/server'
 
 async function checkAuth(req: NextRequest): Promise<boolean> {
@@ -15,13 +15,12 @@ type Ctx = { params: Promise<{ slug: string }> }
 
 // 获取单篇文章（编辑用）
 export async function GET(req: NextRequest, { params }: Ctx) {
-  if (!(await checkAuth(req))) {
-    return jsonError('Unauthorized', 401)
-  }
-
   const { slug } = await params
   const route = await getRouteContextWithDb('DB not configured')
   if (!route.ok) return route.response
+
+  const authError = await ensureAuthenticatedRequest(req, route.db)
+  if (authError) return authError
 
   const post = await getPostBySlug(route.db, slug)
   if (!post) return jsonError('文章不存在', 404)
@@ -31,14 +30,13 @@ export async function GET(req: NextRequest, { params }: Ctx) {
 
 // 更新文章
 export async function PUT(req: NextRequest, { params }: Ctx) {
-  if (!(await checkAuth(req))) {
-    return jsonError('Unauthorized', 401)
-  }
-
   const { slug } = await params
   const route = await getRouteContextWithDb('DB not configured')
   if (!route.ok) return route.response
   const { env, db, ctx } = route
+
+  const authError = await ensureAuthenticatedRequest(req, db)
+  if (authError) return authError
 
   const post = await getPostBySlug(db, slug)
   if (!post) return jsonError('文章不存在', 404)
@@ -121,14 +119,13 @@ export async function PUT(req: NextRequest, { params }: Ctx) {
 
 // 删除文章
 export async function DELETE(req: NextRequest, { params }: Ctx) {
-  if (!(await checkAuth(req))) {
-    return jsonError('Unauthorized', 401)
-  }
-
   const { slug } = await params
   const route = await getRouteContextWithDb('DB not configured')
   if (!route.ok) return route.response
   const { env, db, ctx } = route
+
+  const authError = await ensureAuthenticatedRequest(req, db)
+  if (authError) return authError
 
   try {
     const post = await getPostBySlug(db, slug)

@@ -132,8 +132,24 @@ export default class QmblogPublisher extends Plugin {
     const file = activeView.file;
     const content = await this.app.vault.read(file);
     const title = this.extractTitle(content, file);
+    const slug = this.extractSlug(file) || "";
 
-    this.openPublishModal(file, content, title);
+    let defaultCategory = "";
+    let defaultStatus: "draft" | "published" = "draft";
+
+    if (slug) {
+      try {
+        const post = await this.getPost(slug);
+        if (post) {
+          defaultCategory = post.category || "";
+          defaultStatus = post.status === "published" ? "published" : "draft";
+        }
+      } catch (e) {
+        console.warn("Failed to fetch existing post data", e);
+      }
+    }
+
+    this.openPublishModal(file, content, title, slug, defaultCategory, defaultStatus);
   }
 
   /**
@@ -147,18 +163,44 @@ export default class QmblogPublisher extends Plugin {
 
     const content = await this.app.vault.read(file);
     const title = this.extractTitle(content, file);
+    const slug = this.extractSlug(file) || "";
 
-    this.openPublishModal(file, content, title);
+    let defaultCategory = "";
+    let defaultStatus: "draft" | "published" = "draft";
+
+    if (slug) {
+      try {
+        const post = await this.getPost(slug);
+        if (post) {
+          defaultCategory = post.category || "";
+          defaultStatus = post.status === "published" ? "published" : "draft";
+        }
+      } catch (e) {
+        console.warn("Failed to fetch existing post data", e);
+      }
+    }
+
+    this.openPublishModal(file, content, title, slug, defaultCategory, defaultStatus);
   }
 
   /**
    * Open the publish modal for a given file
    */
-  private openPublishModal(file: TFile, content: string, title: string) {
+  private openPublishModal(
+    file: TFile, 
+    content: string, 
+    title: string, 
+    currentSlug: string,
+    defaultCategory: string = "",
+    defaultStatus: "draft" | "published" = "draft"
+  ) {
     const modal = new PublishModal(
       this.app,
       this,
       title,
+      currentSlug,
+      defaultCategory,
+      defaultStatus,
       async (options, onProgress) => {
         this.setStatus("Blog \u23F3");
         try {
@@ -271,14 +313,38 @@ export default class QmblogPublisher extends Plugin {
       }
     }
 
-    // 5. Create post
-    onProgress("正在创建文章...");
-    const postResult = await this.createPost(
-      options.title,
-      processedContent,
-      options.status,
-      options.category
-    );
+    // 5. Create or Update post
+    let postResult: PostResult;
+    if (options.action === "update") {
+      onProgress("正在更新文章...");
+      postResult = await this.updatePost(
+        options.originalSlug || "",
+        options.title,
+        processedContent,
+        options.status,
+        options.category,
+        options.slug
+      );
+    } else {
+      onProgress("正在创建文章...");
+      postResult = await this.createPost(
+        options.title,
+        processedContent,
+        options.status,
+        options.category,
+        options.slug
+      );
+    }
+
+    if (postResult.success && postResult.slug) {
+      try {
+        await this.app.fileManager.processFrontMatter(file, (fm) => {
+          fm.slug = postResult.slug;
+        });
+      } catch (e) {
+        console.error("Failed to write slug to frontmatter", e);
+      }
+    }
 
     if (postResult.success) {
       return {
@@ -300,6 +366,17 @@ export default class QmblogPublisher extends Plugin {
   }
 
   // ─── Content Helpers ─────────────────────────────────────
+
+  /**
+   * Extract slug from YAML frontmatter using Obsidian's API
+   */
+  extractSlug(file: TFile): string | null {
+    const cache = this.app.metadataCache.getFileCache(file);
+    if (cache && cache.frontmatter && cache.frontmatter.slug) {
+      return String(cache.frontmatter.slug).trim();
+    }
+    return null;
+  }
 
   /**
    * Extract title: YAML frontmatter title > first # heading > filename
@@ -328,7 +405,7 @@ export default class QmblogPublisher extends Plugin {
    * Strip YAML frontmatter from content
    */
   stripFrontmatter(content: string): string {
-    return content.replace(/^---\n[\s\S]*?\n---\n*/, "");
+    return content.replace(/^---[\r\n]+[\s\S]*?[\r\n]+---[\r\n]*/, "");
   }
 
   /**
@@ -622,7 +699,8 @@ export default class QmblogPublisher extends Plugin {
     title: string,
     content: string,
     status: "draft" | "published" = "draft",
-    category: string = ""
+    category: string = "",
+    slug: string = ""
   ): Promise<PostResult> {
     const payload: Record<string, string> = {
       title,
@@ -631,6 +709,9 @@ export default class QmblogPublisher extends Plugin {
     };
     if (category) {
       payload.category = category;
+    }
+    if (slug) {
+      payload.slug = slug;
     }
 
     const response = await requestUrl({
@@ -646,6 +727,64 @@ export default class QmblogPublisher extends Plugin {
 
     const json = response.json as PostResult;
     return json;
+  }
+
+  /**
+   * Update an existing post via /api/posts
+   */
+  async updatePost(
+    currentSlug: string,
+    title: string,
+    content: string,
+    status: "draft" | "published" = "draft",
+    category: string = "",
+    newSlug: string = ""
+  ): Promise<PostResult> {
+    const payload: Record<string, string> = {
+      current_slug: currentSlug,
+      title,
+      content,
+      status,
+    };
+    if (category) {
+      payload.category = category;
+    }
+    if (newSlug && newSlug !== currentSlug) {
+      payload.new_slug = newSlug;
+    }
+
+    const response = await requestUrl({
+      url: `${this.settings.apiUrl}/api/posts?_t=${Date.now()}`,
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${this.settings.apiToken}`,
+        "Content-Type": "application/json",
+        "Cache-Control": "no-cache, no-store",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const json = response.json as PostResult;
+    return json;
+  }
+
+  /**
+   * Fetch an existing post by slug via /api/admin/posts/[slug]
+   */
+  async getPost(slug: string): Promise<any> {
+    try {
+      const response = await requestUrl({
+        url: `${this.settings.apiUrl}/api/admin/posts/${slug}?_t=${Date.now()}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${this.settings.apiToken}`,
+          "Cache-Control": "no-cache, no-store",
+        },
+      });
+      return response.json;
+    } catch (e) {
+      return null;
+    }
   }
 
   /**

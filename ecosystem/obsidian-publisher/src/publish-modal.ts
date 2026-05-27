@@ -11,6 +11,9 @@ export interface PublishOptions {
   title: string;
   category: string;
   status: "draft" | "published";
+  action: "create" | "update";
+  slug: string;
+  originalSlug?: string;
 }
 
 export interface PublishResult {
@@ -36,6 +39,9 @@ export class PublishModal extends Modal {
   private titleValue: string;
   private categoryValue: string = "";
   private statusValue: "draft" | "published" = "draft";
+  private actionValue: "create" | "update";
+  private slugValue: string;
+  private originalSlug: string;
   private categories: CategoryItem[] = [];
 
   // For retry
@@ -45,6 +51,9 @@ export class PublishModal extends Modal {
     app: App,
     plugin: QmblogPublisher,
     defaultTitle: string,
+    currentSlug: string,
+    defaultCategory: string = "",
+    defaultStatus: "draft" | "published" = "draft",
     onPublish: (
       options: PublishOptions,
       onProgress: ProgressCallback
@@ -54,6 +63,11 @@ export class PublishModal extends Modal {
     this.plugin = plugin;
     this.defaultTitle = defaultTitle;
     this.titleValue = defaultTitle;
+    this.originalSlug = currentSlug;
+    this.slugValue = currentSlug;
+    this.actionValue = currentSlug ? "update" : "create";
+    this.categoryValue = defaultCategory;
+    this.statusValue = defaultStatus;
     this.onPublish = onPublish;
   }
 
@@ -63,7 +77,7 @@ export class PublishModal extends Modal {
     this.injectStyles();
 
     contentEl.empty();
-    contentEl.createEl("h2", { text: "发布到个人Blog" });
+    contentEl.createEl("h2", { text: this.actionValue === "update" ? "更新发布到个人Blog" : "发布到个人Blog" });
 
     const loadingEl = contentEl.createDiv({
       cls: "qmblog-center-view",
@@ -172,7 +186,20 @@ export class PublishModal extends Modal {
     const { contentEl } = this;
     contentEl.empty();
 
-    contentEl.createEl("h2", { text: "发布到个人Blog" });
+    contentEl.createEl("h2", { text: this.actionValue === "update" ? "更新发布到个人Blog" : "发布到个人Blog" });
+
+    // Action
+    new Setting(contentEl)
+      .setName("操作类型")
+      .addDropdown((dd) => {
+        dd.addOption("create", "新建文章");
+        dd.addOption("update", "更新现有文章");
+        dd.setValue(this.actionValue);
+        dd.onChange((v) => {
+          this.actionValue = v as "create" | "update";
+          // 如果切换为新建且原本有 slug，可以清空或保留，这里选择保留让用户决定
+        });
+      });
 
     // Title
     new Setting(contentEl)
@@ -218,6 +245,19 @@ export class PublishModal extends Modal {
         });
       });
 
+    // Slug
+    new Setting(contentEl)
+      .setName("文章别名 (Slug)")
+      .setDesc("留空将由系统自动生成。如果有值，则会用于发布或更新该别名对应的文章。")
+      .addText((text) => {
+        text
+          .setValue(this.slugValue)
+          .onChange((v) => {
+            this.slugValue = v;
+          });
+        text.inputEl.style.width = "100%";
+      });
+
     // Buttons
     new Setting(contentEl)
       .addButton((btn) =>
@@ -250,6 +290,9 @@ export class PublishModal extends Modal {
           title: this.titleValue.trim(),
           category: this.categoryValue,
           status: this.statusValue,
+          action: this.actionValue,
+          slug: this.slugValue.trim(),
+          originalSlug: this.originalSlug,
         },
         onProgress
       );
