@@ -39,7 +39,7 @@ bucket_name = "tobe-blog-images"
 # queue = "qiaomu-blog-background-jobs"
 
 [vars]
-NEXT_PUBLIC_SITE_URL = "https://explorify.shop"
+NEXT_PUBLIC_SITE_URL = "https://tiaoge.blog"
 AI_BASE_URL = "https://api.openai.com/v1"
 AI_MODEL = "gpt-4o-mini"
 WORKERS_AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
