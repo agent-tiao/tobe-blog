@@ -63,3 +63,17 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+## 5. Shell 环境注意事项
+
+**本项目运行在 Windows PowerShell 环境下。**
+
+- PowerShell **不支持** `&&` 作为命令连接符，会报 `ParserError: InvalidEndOfLine`
+- 多条命令须用 `;` 分隔，例如：
+  ```powershell
+  # ✅ 正确
+  git add .; git commit -m "msg"
+
+  # ❌ 错误（bash 语法，PowerShell 不支持）
+  git add . && git commit -m "msg"
+  ```
