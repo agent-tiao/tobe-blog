@@ -37,10 +37,19 @@ export async function generateMetadata({
     const category = categories.find((item) => item.slug === slug)
     if (!category) return {}
 
+    const description = `「${category.name}」分类下的所有文章列表。`
+
     return {
       title: `${category.name}`,
+      description,
       alternates: {
         canonical: `${BASE_URL}/category/${slug}`,
+      },
+      openGraph: {
+        title: `${category.name} — 阿条的博客`,
+        description,
+        type: 'website',
+        url: `${BASE_URL}/category/${slug}`,
       },
     }
   } catch {
@@ -84,6 +93,31 @@ export default async function CategoryPage({
       />
 
       <main className="page-main flex-1 mx-auto max-w-3xl w-full px-4 sm:px-6 py-10 sm:py-14">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'CollectionPage',
+              name: `${category.name} — 阿条的博客`,
+              description: `「${category.name}」分类下的所有文章列表。`,
+              url: `${BASE_URL}/category/${slug}`,
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'BreadcrumbList',
+              itemListElement: [
+                { '@type': 'ListItem', position: 1, name: '首页', item: BASE_URL },
+                { '@type': 'ListItem', position: 2, name: category.name, item: `${BASE_URL}/category/${slug}` },
+              ],
+            }),
+          }}
+        />
         <div className="mb-8 border-b border-[var(--editor-line)] pb-6">
           <div className="text-xs uppercase tracking-[0.18em] text-[var(--stone-gray)] mb-3">
             分类

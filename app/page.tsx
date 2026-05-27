@@ -17,6 +17,7 @@ export const metadata = {
   alternates: {
     canonical: BASE_URL,
   },
+  keywords: ['技术博客', '编程', '读书笔记', '数字花园', '阿条', 'tiaoge.blog'],
 }
 
 export default async function Home({

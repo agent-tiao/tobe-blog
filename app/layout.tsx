@@ -44,6 +44,11 @@ export const metadata: Metadata = {
     template: '%s · 阿条的博客',
   },
   description: '记录思考，分享所学，留住当下。技术、生活、读书笔记的数字花园。',
+  verification: {
+    other: {
+      'baidu-site-verification': 'codeva-mLDrTosFY',
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

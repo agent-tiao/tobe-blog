@@ -1,4 +1,5 @@
 import { getPostBySlug, incrementViewCount, isPubliclyAccessiblePost, isSearchIndexablePost } from '@/lib/db'
+import { buildAutoDescription } from '@/lib/post-utils'
 import { getAppCloudflareEnv } from '@/lib/cloudflare'
 import { verifyPassword } from '@/lib/password'
 import { notFound } from 'next/navigation'
@@ -45,9 +46,11 @@ export async function generateMetadata({
       }
     }
 
+    const autoDesc = post.description || buildAutoDescription(post.content || '', 160)
+
     return {
       title: post.title,
-      description: post.description,
+      description: autoDesc,
       robots: searchIndexable ? undefined : { index: false, follow: false },
       authors: [{ name: '阿条' }],
       alternates: {
@@ -55,7 +58,7 @@ export async function generateMetadata({
       },
       openGraph: {
         title: post.title,
-        description: post.description,
+        description: autoDesc,
         type: 'article',
         publishedTime: new Date(post.published_at * 1000).toISOString(),
         modifiedTime: new Date(post.updated_at * 1000).toISOString(),
@@ -67,7 +70,7 @@ export async function generateMetadata({
         site: '@tobe_builder',
         creator: '@tobe_builder',
         title: post.title,
-        description: post.description || undefined,
+        description: autoDesc || undefined,
         images: [ogImage],
       },
     }
