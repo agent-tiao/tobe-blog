@@ -43,7 +43,7 @@ export function HomeDefault({
                 <article
                   key={post.slug}
                   className="group border-t border-[var(--editor-line)] first:border-t-0"
-                  style={{ animation: `fadeInUp 0.4s ease-out ${index * 0.05}s both` }}
+                  style={{ animation: `fadeInUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) ${Math.min(index * 0.04, 0.3)}s both`, willChange: 'transform, opacity' }}
                 >
                   <Link
                     href={`/${post.slug}`}
