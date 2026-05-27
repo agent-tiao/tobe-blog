@@ -150,7 +150,18 @@ export async function PATCH(req: NextRequest) {
     const updates: Record<string, unknown> = {}
     if (nextSlug && nextSlug !== currentSlug) updates.slug = nextSlug
     if (payload.title !== undefined) updates.title = payload.title
-    if (payload.content !== undefined) updates.content = payload.content
+    if (payload.content !== undefined) {
+      const rawContent = typeof payload.content === 'string' ? payload.content : ''
+      updates.content = rawContent
+      if (payload.html === undefined) {
+        updates.html = (
+          await remark()
+            .use(remarkGfm)
+            .use(remarkHtml, { sanitize: false })
+            .process(rawContent)
+        ).toString()
+      }
+    }
     if (payload.html !== undefined) updates.html = payload.html
     if (payload.description !== undefined) {
       const rawDescription = typeof payload.description === 'string' ? payload.description.trim() : ''
