@@ -38,12 +38,11 @@ export function HomeDefault({
           </div>
         ) : (
           <>
-            <div className="space-y-0">
-              {posts.map((post, index) => (
+            <div className="space-y-0" style={{ animation: 'pureFadeIn 0.6s ease-out both' }}>
+              {posts.map((post) => (
                 <article
                   key={post.slug}
                   className="group border-t border-[var(--editor-line)] first:border-t-0"
-                  style={{ animation: `pureFadeIn 0.8s ease-in-out ${index * 0.05}s both`, willChange: 'opacity' }}
                 >
                   <Link
                     href={`/${post.slug}`}
