@@ -42,7 +42,8 @@ export function HomeDefault({
               {posts.map((post, index) => (
                 <article
                   key={post.slug}
-                  className="group border-t border-[var(--editor-line)] first:border-t-0 animate-in fade-in duration-500"
+                  className="group border-t border-[var(--editor-line)] first:border-t-0"
+                  style={{ animation: `fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${index * 0.03}s both`, willChange: 'transform, opacity' }}
                 >
                   <Link
                     href={`/${post.slug}`}
