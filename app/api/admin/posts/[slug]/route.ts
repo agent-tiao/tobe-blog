@@ -70,9 +70,13 @@ export async function PUT(req: NextRequest, { params }: Ctx) {
       description?: string
     }>(req)
     const nextSlug = typeof nextSlugRaw === 'string' ? normalizePostSlug(nextSlugRaw) : ''
-    const normalizedDescription = typeof description === 'string' && description.trim()
-      ? description.trim()
-      : buildAutoDescription(typeof content === 'string' ? content : '')
+    
+    let normalizedDescription: string | undefined = undefined
+    if (description !== undefined || content !== undefined) {
+      normalizedDescription = typeof description === 'string' && description.trim()
+        ? description.trim()
+        : buildAutoDescription(typeof content === 'string' ? content : (post.content || ''))
+    }
 
     await updatePost(db, post.id, {
       slug: nextSlug || undefined,
