@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useEffect, useSyncExternalStore } from 'react'
+import { useEffect, useSyncExternalStore, type ReactNode } from 'react'
 import { getClientThemePreference, subscribeToThemeChange, type Theme } from '@/lib/appearance'
 import type { PostWithTags } from '@/lib/db'
 import type { SiteCategoryLink, SiteNavLink } from '@/lib/site'
@@ -17,6 +17,18 @@ export interface HomeProps {
   currentPage: number
   totalPages: number
   categorySlugMap: Record<string, string>
+}
+
+export interface HomeClientProps {
+  initialTheme: Theme
+  categories: SiteCategoryLink[]
+  navLinks: SiteNavLink[]
+  children?: ReactNode
+  // 非默认主题仍需要这些数据
+  posts?: PostWithTags[]
+  currentPage?: number
+  totalPages?: number
+  categorySlugMap?: Record<string, string>
 }
 
 const HomeVariantA = dynamic<HomeProps>(() =>
@@ -42,14 +54,22 @@ function injectFont(id: string, href: string) {
   }
 }
 
-export function HomeClient(props: HomeProps) {
+export function HomeClient({
+  initialTheme,
+  categories,
+  navLinks,
+  children,
+  posts = [],
+  currentPage = 1,
+  totalPages = 1,
+  categorySlugMap = {},
+}: HomeClientProps) {
   const theme = useSyncExternalStore(
     subscribeToThemeChange,
-    () => getClientThemePreference(props.initialTheme),
-    () => props.initialTheme,
+    () => getClientThemePreference(initialTheme),
+    () => initialTheme,
   )
 
-  // Inject fonts on demand
   useEffect(() => {
     if (theme === 'refined' || theme === 'terminal' || theme === 'editorial') {
       injectFont(
@@ -65,14 +85,25 @@ export function HomeClient(props: HomeProps) {
     }
   }, [theme])
 
-  const ThemeComponent =
-    theme === 'refined'
-      ? HomeVariantA
-      : theme === 'editorial'
-        ? HomeVariantB
-        : theme === 'terminal'
-          ? HomeVariantC
-          : HomeDefault // default + warm 均使用默认布局
+  // default / warm：文章列表由服务端渲染后作为 children 传入，React 不会重新 hydrate
+  if (theme === 'default' || theme === 'warm') {
+    return (
+      <HomeDefault initialTheme={initialTheme} navLinks={navLinks} categories={categories}>
+        {children}
+      </HomeDefault>
+    )
+  }
 
-  return <ThemeComponent {...props} />
+  // 其他主题：保持原有逻辑，自行渲染文章列表
+  const fullProps: HomeProps = { initialTheme, posts, categories, navLinks, currentPage, totalPages, categorySlugMap }
+
+  if (theme === 'refined') return <HomeVariantA {...fullProps} />
+  if (theme === 'editorial') return <HomeVariantB {...fullProps} />
+  if (theme === 'terminal') return <HomeVariantC {...fullProps} />
+
+  return (
+    <HomeDefault initialTheme={initialTheme} navLinks={navLinks} categories={categories}>
+      {children}
+    </HomeDefault>
+  )
 }

@@ -4,13 +4,14 @@ import { type Theme } from '@/lib/appearance'
 import type { SiteCategoryLink, SiteNavLink } from '@/lib/site'
 import { getSiteHeaderData } from '@/lib/site'
 import { HomeClient } from '@/components/HomeClient'
+import { HomeArticleList } from '@/components/HomeArticleList'
 import { getSiteUrl } from '@/lib/site-config'
 
 const PAGE_SIZE = 25
 const BASE_URL = getSiteUrl()
 
 // Cloudflare Workers 缓存策略
-export const revalidate = 0 // 临时禁用缓存以验证修复效果
+export const revalidate = 300 // 5分钟缓存
 export const dynamicParams = true
 
 export const metadata = {
@@ -87,13 +88,20 @@ export default async function Home({
       />
       <HomeClient
         initialTheme={defaultTheme}
-        posts={posts}
         categories={categories}
         navLinks={navLinks}
+        posts={posts}
         currentPage={currentPage}
         totalPages={totalPages}
         categorySlugMap={categorySlugMap}
-      />
+      >
+        <HomeArticleList
+          posts={posts}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          categorySlugMap={categorySlugMap}
+        />
+      </HomeClient>
     </>
   )
 }
