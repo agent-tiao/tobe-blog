@@ -10,8 +10,7 @@ export function SiteFooter() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
-  const { authenticated: isAdmin, checked } = useAdminSession()
-  console.log('[SiteFooter] render', { isAdmin, checked, t: Date.now() })
+  const { authenticated: isAdmin } = useAdminSession()
 
   useEffect(() => {
     if (open) {

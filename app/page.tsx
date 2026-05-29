@@ -11,7 +11,7 @@ const PAGE_SIZE = 25
 const BASE_URL = getSiteUrl()
 
 // Cloudflare Workers 缓存策略
-export const revalidate = 300 // 5分钟缓存
+export const revalidate = 0 // 不缓存 HTML，防止旧 HTML + 新部署 JS/CSS 404 导致布局跳动
 export const dynamicParams = true
 
 export const metadata = {
