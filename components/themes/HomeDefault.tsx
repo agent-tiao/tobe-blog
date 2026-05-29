@@ -38,7 +38,7 @@ export function HomeDefault({
           </div>
         ) : (
           <>
-            <div className="space-y-0" style={{ animation: 'pureFadeIn 0.6s ease-out both' }}>
+            <div className="space-y-0">
               {posts.map((post) => (
                 <article
                   key={post.slug}
