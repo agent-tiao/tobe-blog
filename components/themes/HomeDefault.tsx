@@ -68,7 +68,7 @@ export function HomeDefault({
                         )}
                       </h2>
                       {post.description && (
-                        <p className="text-sm text-[var(--editor-muted)] leading-relaxed line-clamp-2 mb-2.5">
+                        <p className="text-sm text-[var(--editor-muted)] leading-relaxed line-clamp-2 mb-2.5" style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                           {post.description}
                         </p>
                       )}
