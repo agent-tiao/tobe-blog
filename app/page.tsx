@@ -10,7 +10,7 @@ const PAGE_SIZE = 25
 const BASE_URL = getSiteUrl()
 
 // Cloudflare Workers 缓存策略
-export const revalidate = 3600 // 1小时缓存
+export const revalidate = 0 // 临时禁用缓存以验证修复效果
 export const dynamicParams = true
 
 export const metadata = {
