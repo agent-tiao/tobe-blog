@@ -85,6 +85,8 @@ export function HomeClient({
     }
   }, [theme])
 
+  console.log('[HomeClient] render', { theme, t: Date.now() })
+
   // default / warm：文章列表由服务端渲染后作为 children 传入，React 不会重新 hydrate
   if (theme === 'default' || theme === 'warm') {
     return (

@@ -44,6 +44,7 @@ export function SiteHeader({
     () => getClientThemePreference(initialTheme),
     () => initialTheme,
   )
+  console.log('[SiteHeader] render', { theme, t: Date.now() })
 
   // 点击外部关闭分类下拉
   useEffect(() => {
