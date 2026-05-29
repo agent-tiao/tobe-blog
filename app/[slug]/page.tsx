@@ -1,3 +1,4 @@
+import 'katex/dist/katex.min.css'
 import { getPostBySlug, incrementViewCount, isPubliclyAccessiblePost, isSearchIndexablePost } from '@/lib/db'
 import { buildAutoDescription } from '@/lib/post-utils'
 import { getAppCloudflareEnv } from '@/lib/cloudflare'
