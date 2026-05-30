@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Pagination } from '@/components/Pagination'
+import { ClientHeightLogger } from '@/components/ClientHeightLogger'
 import type { PostWithTags } from '@/lib/db'
 
 function formatDate(ts: number) {
@@ -39,11 +40,12 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
               href={`/${post.slug}`}
               className="block py-6 sm:py-7 transition-colors duration-200 hover:bg-[var(--editor-panel)] border-l-2 border-l-transparent hover:border-l-[var(--editor-accent)] pl-4"
             >
-              <div>
-                <h2
-                  className="text-xl sm:text-2xl font-bold text-[var(--editor-ink)] leading-snug mb-2 group-hover:text-[var(--editor-accent)] transition-colors duration-200 flex items-center gap-2"
-                  style={{ fontFamily: 'Georgia, "Noto Serif SC", serif' }}
-                >
+              <ClientHeightLogger id={`article-content-${post.slug}`}>
+                <ClientHeightLogger id={`title-${post.slug}`}>
+                  <h2
+                    className="text-xl sm:text-2xl font-bold text-[var(--editor-ink)] leading-snug mb-2 group-hover:text-[var(--editor-accent)] transition-colors duration-200 flex items-center gap-2"
+                    style={{ fontFamily: 'Georgia, "Noto Serif SC", serif' }}
+                  >
                   {post.title}
                   {post.password && (
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--editor-muted)] flex-shrink-0">
@@ -58,15 +60,19 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
                     </svg>
                   )}
                 </h2>
+                </ClientHeightLogger>
                 {post.description && (
-                  <p
-                    className="text-sm text-[var(--editor-muted)] leading-relaxed line-clamp-2 mb-2.5"
-                    style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
-                  >
-                    {post.description}
-                  </p>
+                  <ClientHeightLogger id={`desc-${post.slug}`}>
+                    <p
+                      className="text-sm text-[var(--editor-muted)] leading-relaxed line-clamp-2 mb-2.5"
+                      style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}
+                    >
+                      {post.description}
+                    </p>
+                  </ClientHeightLogger>
                 )}
-                <div className="flex items-center gap-2 text-xs text-[var(--stone-gray)]">
+                <ClientHeightLogger id={`footer-${post.slug}`}>
+                  <div className="flex items-center gap-2 text-xs text-[var(--stone-gray)]">
                   <time>{formatDate(post.published_at)}</time>
                   {post.category && (() => {
                     const slug = categorySlugMap[post.category]
@@ -89,7 +95,8 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
                     )
                   })()}
                 </div>
-              </div>
+                </ClientHeightLogger>
+              </ClientHeightLogger>
             </Link>
           </article>
         ))}
