@@ -7,7 +7,7 @@ import { HomeClient } from '@/components/HomeClient'
 import { HomeArticleList } from '@/components/HomeArticleList'
 import { getSiteUrl } from '@/lib/site-config'
 
-const PAGE_SIZE = 25
+const PAGE_SIZE = 10
 const BASE_URL = getSiteUrl()
 
 // Cloudflare Workers 缓存策略

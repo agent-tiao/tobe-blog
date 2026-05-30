@@ -35,8 +35,8 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
             key={post.slug}
             className="group border-t border-[var(--editor-line)] first:border-t-0 relative"
             style={{ 
-              animation: 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards',
-              animationDelay: `${index * 0.06}s`
+              animation: 'pureFadeIn 0.8s ease-out backwards',
+              animationDelay: `${index * 0.08}s`
             }}
           >
             <div
@@ -99,8 +99,8 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
       </div>
       <div 
         style={{ 
-          animation: 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards',
-          animationDelay: `${posts.length * 0.06}s`
+          animation: 'pureFadeIn 0.8s ease-out backwards',
+          animationDelay: `${posts.length * 0.08}s`
         }}
       >
         <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/" />
