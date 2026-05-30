@@ -30,10 +30,14 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
   return (
     <>
       <div className="space-y-0">
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <article
             key={post.slug}
             className="group border-t border-[var(--editor-line)] first:border-t-0 relative"
+            style={{ 
+              animation: 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards',
+              animationDelay: `${index * 0.06}s`
+            }}
           >
             <div
               className="block py-6 sm:py-7 transition-colors duration-200 group-hover:bg-[var(--editor-panel)] border-l-2 border-l-transparent group-hover:border-l-[var(--editor-accent)] pl-4"
@@ -93,7 +97,14 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
           </article>
         ))}
       </div>
-      <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/" />
+      <div 
+        style={{ 
+          animation: 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards',
+          animationDelay: `${posts.length * 0.06}s`
+        }}
+      >
+        <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/" />
+      </div>
     </>
   )
 }
