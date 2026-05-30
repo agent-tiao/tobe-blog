@@ -37,7 +37,7 @@ export function HomeArticleList({ posts, currentPage, totalPages, categorySlugMa
           >
             <Link
               href={`/${post.slug}`}
-              className="block py-6 sm:py-7 transition-all duration-200 hover:bg-[var(--editor-panel)] border-l-2 border-l-transparent hover:border-l-[var(--editor-accent)] pl-4"
+              className="block py-6 sm:py-7 transition-colors duration-200 hover:bg-[var(--editor-panel)] border-l-2 border-l-transparent hover:border-l-[var(--editor-accent)] pl-4"
             >
               <div>
                 <h2
