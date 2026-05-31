@@ -4,6 +4,7 @@ import "./globals.css";
 import { GlobalShortcuts } from "@/components/GlobalShortcuts";
 import { ToastProvider } from "@/components/Toast";
 import { CustomJsInjector } from "@/components/CustomJsInjector";
+import { TopProgressBar } from "@/components/TopProgressBar";
 import { FONT_CONFIG, THEME_OPTIONS, THEME_STORAGE_KEY, normalizeTheme } from "@/lib/appearance";
 import { getAppCloudflareEnv } from "@/lib/cloudflare";
 import { getSetting } from "@/lib/db";
@@ -170,6 +171,7 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: appearanceApplyScript }} />
       </head>
       <body className="min-h-full flex flex-col">
+        <TopProgressBar />
         <ToastProvider>
           <GlobalShortcuts />
           {children}
