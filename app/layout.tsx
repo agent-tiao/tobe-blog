@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Suspense } from 'react';
 import { GlobalShortcuts } from "@/components/GlobalShortcuts";
 import { ToastProvider } from "@/components/Toast";
 import { CustomJsInjector } from "@/components/CustomJsInjector";
@@ -171,7 +172,9 @@ export default async function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: appearanceApplyScript }} />
       </head>
       <body className="min-h-full flex flex-col">
-        <TopProgressBar />
+        <Suspense fallback={null}>
+          <TopProgressBar />
+        </Suspense>
         <ToastProvider>
           <GlobalShortcuts />
           {children}
