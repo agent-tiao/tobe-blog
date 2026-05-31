@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getPosts, searchPosts, getCategories } from '@/lib/db'
 import { getAppCloudflareEnv } from '@/lib/cloudflare'
 import Link from 'next/link'
@@ -75,14 +76,16 @@ export default async function AdminPostsPage({
 
   return (
     <div>
-      <FilterBar
-        currentStatus={status}
-        currentCategory={category}
-        categories={postCategories}
-        initialQuery={q}
-        counts={stats}
-        resultCount={posts.length}
-      />
+      <Suspense fallback={<div className="mb-5 h-[104px] rounded-xl border border-[var(--editor-line)] bg-[var(--editor-panel)] animate-pulse" />}>
+        <FilterBar
+          currentStatus={status}
+          currentCategory={category}
+          categories={postCategories}
+          initialQuery={q}
+          counts={stats}
+          resultCount={posts.length}
+        />
+      </Suspense>
 
       {posts.length === 0 ? (
         <div className="bg-[var(--editor-panel)] rounded-xl border border-[var(--editor-line)] p-20 text-center">
