@@ -54,9 +54,11 @@ function AdminLoginForm() {
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#1f6f59] text-white text-xl font-bold mb-4">
-            乔
-          </div>
+          <img 
+            src="/icon-192.png" 
+            alt="Logo" 
+            className="w-16 h-16 mx-auto mb-4 rounded-xl object-cover shadow-sm" 
+          />
           <h1 className="text-2xl font-bold text-[var(--editor-ink)]">阿条的博客</h1>
           <p className="text-sm text-[var(--editor-muted)] mt-1">管理后台</p>
         </div>
