@@ -135,7 +135,7 @@ export default class QmblogPublisher extends Plugin {
     const slug = this.extractSlug(file) || "";
 
     let defaultCategory = "";
-    let defaultStatus: "draft" | "published" = "draft";
+    let defaultStatus: "draft" | "published" = "published";
 
     if (slug) {
       try {
@@ -166,7 +166,7 @@ export default class QmblogPublisher extends Plugin {
     const slug = this.extractSlug(file) || "";
 
     let defaultCategory = "";
-    let defaultStatus: "draft" | "published" = "draft";
+    let defaultStatus: "draft" | "published" = "published";
 
     if (slug) {
       try {

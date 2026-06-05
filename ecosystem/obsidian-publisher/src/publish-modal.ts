@@ -61,8 +61,8 @@ export class PublishModal extends Modal {
   ) {
     super(app);
     this.plugin = plugin;
-    this.defaultTitle = defaultTitle;
-    this.titleValue = defaultTitle;
+    this.defaultTitle = defaultTitle.replace(/^\d{4}-\d{2}-\d{2}\s*/, "");
+    this.titleValue = this.defaultTitle;
     this.originalSlug = currentSlug;
     this.slugValue = currentSlug;
     this.actionValue = currentSlug ? "update" : "create";
@@ -90,6 +90,9 @@ export class PublishModal extends Modal {
 
     try {
       this.categories = await this.fetchCategories();
+      if (!this.categoryValue && this.categories.length > 0) {
+        this.categoryValue = this.categories[0].name;
+      }
     } catch (e) {
       console.error("Failed to fetch categories:", e);
     }
