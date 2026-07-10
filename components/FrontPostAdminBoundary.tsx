@@ -32,7 +32,7 @@ export function FrontPostAdminBoundary({
   const { authenticated } = useAdminSession()
   const [editing, setEditing] = useState(false)
 
-  const handleReadModeClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
+  const handleReadModeDoubleClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
     if (!authenticated || editing) return
     if (event.defaultPrevented || event.button !== 0) return
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
@@ -69,7 +69,7 @@ export function FrontPostAdminBoundary({
 
   return (
     <div
-      onClickCapture={handleReadModeClick}
+      onDoubleClickCapture={handleReadModeDoubleClick}
       data-admin-inline-entry={authenticated ? 'true' : undefined}
     >
       {children}
