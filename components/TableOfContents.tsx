@@ -42,25 +42,46 @@ export function TableOfContents({ contentId }: TableOfContentsProps) {
     })
     setCollapsed(initialCollapsed)
 
-    // IntersectionObserver：追踪当前可见标题
-    const headingEls = headings
-    observerRef.current?.disconnect()
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        // 找到最靠近视口顶部的可见标题
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-        if (visible.length > 0) {
-          setActiveId((visible[0].target as HTMLElement).id)
+    // 使用 requestAnimationFrame 和 getBoundingClientRect 实现更精确的滚动监听
+    let ticking = false
+    const handleScroll = () => {
+      // 找到最后一个 top <= 100 的 heading
+      // 预留的 offset 为 80，这里给 96 作为缓冲，确保 scrollTo 到达后能被选中
+      let currentActiveId = headings[0]?.id || ''
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const el = headings[i]
+        const rect = el.getBoundingClientRect()
+        if (rect.top <= 96) {
+          currentActiveId = el.id
+          break
         }
-      },
-      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
-    )
-    headingEls.forEach((el) => observerRef.current!.observe(el))
+      }
+
+      // 检查是否滚动到底部
+      const isAtBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 20
+      if (isAtBottom && headings.length > 0) {
+        currentActiveId = headings[headings.length - 1].id
+      }
+
+      setActiveId(currentActiveId)
+    }
+
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll()
+          ticking = false
+        })
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    // 初始化执行一次
+    handleScroll()
 
     return () => {
-      observerRef.current?.disconnect()
+      window.removeEventListener('scroll', onScroll)
     }
   }, [contentId])
 
